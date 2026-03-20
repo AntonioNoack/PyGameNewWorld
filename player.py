@@ -48,7 +48,7 @@ class Player:
             self.player_pos.x += self.speed * dt
             self.orientation = "right"
 
-    def draw(self, screen):
+    def draw(self, screen, x_offset, y_offset):
         #pygame.draw.circle(screen, "black", self.player_pos, 40)
         
         if self.orientation == "left":
@@ -60,4 +60,4 @@ class Player:
         elif self.orientation == "down":
             tile = self.tileset.tiles[0]
 
-        screen.blit(tile, (self.player_pos.x-16/2, self.player_pos.y-32/2))
+        screen.blit(tile, ((self.player_pos.x-16/2)+x_offset, (self.player_pos.y-32/2)+y_offset))

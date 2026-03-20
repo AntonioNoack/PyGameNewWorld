@@ -2,13 +2,12 @@ import pygame
 import matplotlib.pyplot as plt
 from perlin_noise import PerlinNoise
 from player import Player
+from camera import Camera
 from tileset import Tileset
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption('New World')
-
-game_is_running = True
 clock = pygame.time.Clock()
 dt = 0
 
@@ -25,8 +24,12 @@ print("world tileset:",world_tileset)
 player_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2)
 player = Player(player_pos)
 
+# Camera
+camera_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2)
+camera = Camera(camera_pos)
+
 # UI
-font = pygame.freetype.Font("assets/fonts/OpenSans-Medium.ttf", 24)
+font = pygame.freetype.Font("assets/fonts/OpenSans-Medium.ttf", 20)
 
 # # Noise
 # noise = PerlinNoise(0.5,seed=seed)
@@ -53,12 +56,14 @@ font = pygame.freetype.Font("assets/fonts/OpenSans-Medium.ttf", 24)
 # plt.imshow(pic, cmap='gray')
 # plt.show()
 
-
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
+            camera.toggle_follow()
+            print("follow:", camera.following)
 
     # ------------------
     # LOGIC
@@ -66,6 +71,12 @@ while True:
 
     # Move Player
     player.move(dt)
+
+    # Update Camera
+    camera.move(dt)
+    camera.follow(player.player_pos)
+    x_offset=((world_surface.get_width() / 2)-camera_pos.x)
+    y_offset=((world_surface.get_height() / 2)-camera_pos.y)
 
     # ------------------
     # WORLD AND PLAYER GRAPHICS
@@ -77,10 +88,10 @@ while True:
     for x in range(int(world_surface.get_width()/world_tile_size+1)):
         for y in range(int(world_surface.get_height()/world_tile_size+1)):
 
-            world_surface.blit(world_tileset.tiles[0], (world_tile_size*x,world_tile_size*y))
+            world_surface.blit(world_tileset.tiles[0], (world_tile_size*x+x_offset,world_tile_size*y+y_offset))
 
     # Display Player
-    player.draw(world_surface)
+    player.draw(world_surface, x_offset, y_offset)
     
     # Scale World Surface to Screen
     scaled_world_surface = pygame.transform.scale(world_surface, (screen.get_width(),screen.get_height()))
@@ -110,7 +121,11 @@ while True:
     font_surface, _ = font.render(f"Player Position: ({player_pos.x:.0f}, {player_pos.y:.0f})", "black")
     screen.blit(font_surface, (10, 10))
 
-
+    if camera.following:
+        font_surface, _ = font.render(f"Lazy Camera ON (press c)", "black")
+    else:
+        font_surface, _ = font.render(f"Lazy Camera OFF (press c)", "black")
+    screen.blit(font_surface, (10, 40))
 
     # Update the display with everything drawn
     pygame.display.flip()
