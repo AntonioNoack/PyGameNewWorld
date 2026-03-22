@@ -2,6 +2,7 @@ import pygame
 import matplotlib.pyplot as plt
 from perlin_noise import PerlinNoise
 from player import Player
+from slime import Slime
 from camera import Camera
 from tileset import Tileset
 
@@ -23,6 +24,10 @@ print("world tileset:",world_tileset)
 # Player
 player_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2)
 player = Player(player_pos)
+
+# Slime
+slime_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2 + 50)
+slime = Slime(slime_pos)
 
 # Camera
 camera_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2)
@@ -78,6 +83,9 @@ while True:
     x_offset=((world_surface.get_width() / 2)-camera_pos.x)
     y_offset=((world_surface.get_height() / 2)-camera_pos.y)
 
+    # Move Mobs
+    slime.move(dt)
+
     # ------------------
     # WORLD AND PLAYER GRAPHICS
     # ------------------
@@ -92,6 +100,9 @@ while True:
 
     # Display Player
     player.draw(world_surface, x_offset, y_offset)
+
+    # Display Mobs
+    slime.draw(world_surface, x_offset, y_offset)
     
     # Scale World Surface to Screen
     scaled_world_surface = pygame.transform.scale(world_surface, (screen.get_width(),screen.get_height()))
