@@ -27,7 +27,7 @@ player = Player(player_pos)
 
 # Slime
 slime_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2 + 50)
-slime = Slime(slime_pos)
+slime = Slime(slime_pos, player)
 
 # Camera
 camera_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2)
