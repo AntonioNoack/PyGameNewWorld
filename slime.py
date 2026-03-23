@@ -10,7 +10,7 @@ class Slime:
         self.anim = 0
         self.orientation = "down"
         self.player = player
-        self.distance_goal = 0
+        self.distance_goal = 60
         self.orientation_offset = 0
 
     def move(self, dt):
@@ -18,19 +18,36 @@ class Slime:
         dx = self.slime_pos.x-self.player.player_pos.x
         dy = self.slime_pos.y-self.player.player_pos.y
         self.distance_to_player = math.sqrt(pow(dx,2)+pow(dy,2))
-        near = 10
-        if self.distance_to_player > self.distance_goal and dy>0 and -near < dx < near:
+        near = 20
+        isFar = self.distance_to_player > self.distance_goal
+        if dy>0 and -near < dx < near:
             self.orientation = "up"
-        elif self.distance_to_player > self.distance_goal and dy<0 and -near < dx < near:
+            if isFar:
+                self.slime_pos.y -= self.speed * dt
+        elif dy<0 and -near < dx < near:
             self.orientation = "down"
-        elif self.distance_to_player > self.distance_goal and dy<0 and dx>0:
+            if isFar:
+                self.slime_pos.y += self.speed * dt
+        elif dy<0 and dx>0:
             self.orientation = "leftdown"
-        elif self.distance_to_player > self.distance_goal and dy<0 and dx<0:
+            if isFar:
+                self.slime_pos.y += self.speed * dt / 1.4
+                self.slime_pos.x -= self.speed * dt / 1.4
+        elif dy<0 and dx<0:
             self.orientation = "rightdown"
-        elif self.distance_to_player > self.distance_goal and dy>0 and dx>0:
+            if isFar:
+                self.slime_pos.y += self.speed * dt / 1.4
+                self.slime_pos.x += self.speed * dt / 1.4
+        elif dy>0 and dx>0:
             self.orientation = "leftup"
-        elif self.distance_to_player > self.distance_goal and dy>0 and dx<0:
+            if isFar:
+                self.slime_pos.y -= self.speed * dt / 1.4
+                self.slime_pos.x -= self.speed * dt / 1.4
+        elif dy>0 and dx<0:
             self.orientation = "rightup"
+            if isFar:
+                self.slime_pos.y -= self.speed * dt / 1.4
+                self.slime_pos.x += self.speed * dt / 1.4
 
     def draw(self, screen, x_offset, y_offset):
         if self.orientation == "up":
