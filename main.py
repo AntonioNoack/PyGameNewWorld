@@ -70,6 +70,11 @@ while True:
             camera.toggle_follow()
             print("follow:", camera.following)
 
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_k:
+            print("k pressed")
+            if slime.distance_to_player < 20:
+                player.toggleMountEntity(slime)
+
     # ------------------
     # LOGIC
     # ------------------
@@ -79,7 +84,7 @@ while True:
 
     # Update Camera
     camera.move(dt)
-    camera.follow(player.player_pos)
+    camera.follow(player.position)
     x_offset=((world_surface.get_width() / 2)-camera_pos.x)
     y_offset=((world_surface.get_height() / 2)-camera_pos.y)
 
@@ -137,6 +142,10 @@ while True:
     else:
         font_surface, _ = font.render(f"Lazy Camera OFF (press c)", "black")
     screen.blit(font_surface, (10, 40))
+
+    if slime.distance_to_player < 20:
+        font_surface, _ = font.render(f"Jump On/Off Slimey (press k)", "black")
+        screen.blit(font_surface, (10, 70))
 
     # Update the display with everything drawn
     pygame.display.flip()
