@@ -31,11 +31,11 @@ class Slime:
             if isFar:
                 self.position.y += self.speed * dt
         elif dx>0 and -near < dy < near:
-            self.orientation = "leftdown"  #left
+            self.orientation = "left"
             if isFar:
                 self.position.x -= self.speed * dt
         elif dx<0 and -near < dy < near:
-            self.orientation = "rightdown"  #right
+            self.orientation = "right"
             if isFar:
                 self.position.x += self.speed * dt
         elif dy<0 and dx>0:
@@ -62,9 +62,14 @@ class Slime:
                 #          |   |       
                 #   _______|   |_______
                 #          |___|       
-                #   _______|   |_______
+                #   .......|   |.......
                 #          |   |       
                 #          |   |       
+                # when player is in middle slime is somewhere -> slime orientation
+                # .... = different slime movement but same orientation
+
+        if self.player.mount == self:
+            self.orientation = self.player.orientation
 
     def draw(self, screen, x_offset, y_offset):
         if self.orientation == "up":
@@ -79,6 +84,10 @@ class Slime:
             self.orientation_offset = 4
         elif self.orientation == "rightup":
             self.orientation_offset = 5
+        elif self.orientation == "left":
+            self.orientation_offset = 1
+        elif self.orientation == "right":
+            self.orientation_offset = 2
         
         tile = self.tileset.tiles[(math.floor(self.anim * 10) % 6 * 6)+self.orientation_offset]
         screen.blit(tile, ((self.position.x-276//6/2)+x_offset, (self.position.y-198//6/2)+y_offset))

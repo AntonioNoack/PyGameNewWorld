@@ -19,22 +19,22 @@ class Player:
         if keys[pygame.K_d] and keys[pygame.K_s]:
             self.position.x += self.speed * dt / 1.4
             self.position.y += self.speed * dt / 1.4
-            self.orientation = "down"
+            self.orientation = "rightdown"
         
         elif keys[pygame.K_a] and keys[pygame.K_s]:
             self.position.x -= self.speed * dt / 1.4
             self.position.y += self.speed * dt / 1.4
-            self.orientation = "down"
+            self.orientation = "leftdown"
 
         elif keys[pygame.K_d] and keys[pygame.K_w]:
             self.position.x += self.speed * dt / 1.4
             self.position.y -= self.speed * dt / 1.4
-            self.orientation = "up"
+            self.orientation = "rightup"
         
         elif keys[pygame.K_a] and keys[pygame.K_w]:
             self.position.x -= self.speed * dt / 1.4
             self.position.y -= self.speed * dt / 1.4
-            self.orientation = "up"
+            self.orientation = "leftup"
         
         elif keys[pygame.K_w]:
             self.position.y -= self.speed * dt
@@ -73,7 +73,15 @@ class Player:
             tile = 1
         elif self.orientation == "up":
             tile = 2
+        elif self.orientation == "leftup":
+            tile = 2
+        elif self.orientation == "rightup":
+            tile = 2
         elif self.orientation == "down":
+            tile = 0
+        elif self.orientation == "leftdown":
+            tile = 0
+        elif self.orientation == "rightdown":
             tile = 0
 
         tile += (math.floor(self.anim*10) % 4 * 4)
