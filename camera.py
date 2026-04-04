@@ -46,9 +46,11 @@ class Camera:
             self.position.x += self.speed * dt
             self.following = False
 
-    def follow(self, player_pos):
+    def follow(self, player):
 
         #toggle_key = pygame.event.get()
+
+        player_pos = player.position
 
         if self.following:
             self.position.x = player_pos.x

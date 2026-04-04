@@ -61,7 +61,7 @@ class Player:
         if self.mounted:
             #print("mounted true")
             self.mount.position.x = self.position.x
-            self.mount.position.y = self.position.y + 14
+            self.mount.position.y = self.position.y
             self.speed *= 2
 
     def draw(self, screen, x_offset, y_offset):
@@ -84,9 +84,10 @@ class Player:
         elif self.orientation == "rightdown":
             tile = 0
 
-        tile += (math.floor(self.anim*10) % 4 * 4)
+        if not self.mounted:
+            tile += (math.floor(self.anim*10) % 4 * 4)
 
-        screen.blit(self.tileset.tiles[tile], ((self.position.x-16/2)+x_offset, (self.position.y-32/2)+y_offset))
+        screen.blit(self.tileset.tiles[tile], ((self.position.x-16/2)+x_offset, (self.position.y-32/2 - (self.mount.animOffsetY if self.mounted else 0) - 14)+y_offset))
 
     def toggleMountEntity(self, entity):
         self.mount = entity

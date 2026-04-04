@@ -84,7 +84,7 @@ while True:
 
     # Update Camera
     camera.move(dt)
-    camera.follow(player.position)
+    camera.follow(player)
     x_offset=((world_surface.get_width() / 2)-camera_pos.x)
     y_offset=((world_surface.get_height() / 2)-camera_pos.y)
 

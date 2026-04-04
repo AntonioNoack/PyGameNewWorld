@@ -7,6 +7,7 @@ class Slime:
         self.speed = 120
         self.position = slime_pos
         self.tileset = Tileset("assets/tilemaps/slimes_green.png", (276 // 6,198 // 6))
+        #tileset from https://shimyx.itch.io/6-direction-slimes-animation
         self.anim = 0
         self.orientation = "down"
         self.player = player
@@ -14,6 +15,7 @@ class Slime:
         self.orientation_offset = 0
         self.isFar = False
         self.distance_to_player = 1000
+        self.animOffsetY = 0
 
     def move(self, dt):
         self.anim += dt
@@ -70,6 +72,9 @@ class Slime:
 
         if self.player.mount == self:
             self.orientation = self.player.orientation
+            self.animOffsetPixels = [8, 5, 2, -2, 2, 4]
+            self.animOffsetY = self.animOffsetPixels[(math.floor((self.anim+1/60) * 10)+1) % 6]
+            #print(self.animOffsetY)
 
     def draw(self, screen, x_offset, y_offset):
         if self.orientation == "up":
