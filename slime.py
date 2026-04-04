@@ -30,6 +30,14 @@ class Slime:
             self.orientation = "down"
             if isFar:
                 self.position.y += self.speed * dt
+        elif dx>0 and -near < dy < near:
+            self.orientation = "leftdown"  #left
+            if isFar:
+                self.position.x -= self.speed * dt
+        elif dx<0 and -near < dy < near:
+            self.orientation = "rightdown"  #right
+            if isFar:
+                self.position.x += self.speed * dt
         elif dy<0 and dx>0:
             self.orientation = "leftdown"
             if isFar:
@@ -50,6 +58,13 @@ class Slime:
             if isFar:
                 self.position.y -= self.speed * dt / 1.4
                 self.position.x += self.speed * dt / 1.4
+
+                #          |   |       
+                #   _______|   |_______
+                #          |___|       
+                #   _______|   |_______
+                #          |   |       
+                #          |   |       
 
     def draw(self, screen, x_offset, y_offset):
         if self.orientation == "up":
