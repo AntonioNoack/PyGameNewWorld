@@ -5,6 +5,7 @@ from player import Player
 from slime import Slime
 from camera import Camera
 from tileset import Tileset
+from chest import Chest
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
@@ -28,6 +29,10 @@ player = Player(player_pos)
 # Slime
 slime_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2 + 50)
 slime = Slime(slime_pos, player)
+
+# Chest
+chest_pos = pygame.Vector2(world_surface.get_width() / 2 + 60, world_surface.get_height() / 2 - 50)
+chest = Chest(chest_pos, player)
 
 # Camera
 camera_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2)
@@ -75,6 +80,10 @@ while True:
             if slime.distance_to_player < 20:
                 player.toggleMountEntity(slime)
 
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+            print("e pressed")
+            chest.interact()
+
     # ------------------
     # LOGIC
     # ------------------
@@ -108,6 +117,9 @@ while True:
 
     # Display Mobs
     slime.draw(world_surface, x_offset, y_offset)
+
+    # Display Environment
+    chest.draw(world_surface, x_offset, y_offset, dt)
     
     # Scale World Surface to Screen
     scaled_world_surface = pygame.transform.scale(world_surface, (screen.get_width(),screen.get_height()))
@@ -146,6 +158,10 @@ while True:
     if slime.distance_to_player < 20:
         font_surface, _ = font.render(f"Jump On/Off Slimey (press k)", "black")
         screen.blit(font_surface, (10, 70))
+
+    if chest.distanceToPlayer < 40:
+        font_surface, _ = font.render(f"Open/Close chest (press e)", "black")
+        screen.blit(font_surface, (10, 100))
 
     # Update the display with everything drawn
     pygame.display.flip()
