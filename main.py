@@ -24,6 +24,7 @@ print("world tileset:",world_tileset)
 generated_world = GenerateWorld(seed)
 
 # Player
+# TODO: Player auf 0,0 starten, nicht anhand world_surface sondern anhand der world coordinates
 player_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2)
 player = Player(player_pos)
 
@@ -67,8 +68,10 @@ while True:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
             print("e pressed")
             chest.interact()
-
-    world_surface = pygame.Surface((screen.get_width() / world_scale, screen.get_height() / world_scale)) # 1/4th of display since we want to scale it later up by 4  
+        
+        # https://www.pygame.org/wiki/WindowResizing
+        if event.type == pygame.VIDEORESIZE:
+            world_surface = pygame.Surface((screen.get_width() / world_scale, screen.get_height() / world_scale)) # 1/4th of display since we want to scale it later up by 4  
 
     if (dt == 0):
         dt = 1/1000
