@@ -7,7 +7,7 @@ from chest import Chest
 from generateWorld import GenerateWorld
 
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
 pygame.display.set_caption('New World')
 clock = pygame.time.Clock()
 dt = 0
@@ -15,10 +15,10 @@ dt = 0
 # World
 seed = 42
 world_scale = 4
-world_surface = pygame.Surface((screen.get_width() / world_scale, screen.get_height() / world_scale)) # 1/4th of display since we want to scale it later up by 4
 
 world_tile_size = 16
 world_tileset = Tileset("assets/tilemaps/overworld.png", (world_tile_size, world_tile_size))
+world_surface = pygame.Surface((screen.get_width() / world_scale, screen.get_height() / world_scale)) # 1/4th of display since we want to scale it later up by 4
 print("world tileset:",world_tileset)
 
 generated_world = GenerateWorld(seed)
@@ -67,6 +67,8 @@ while True:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
             print("e pressed")
             chest.interact()
+
+    world_surface = pygame.Surface((screen.get_width() / world_scale, screen.get_height() / world_scale)) # 1/4th of display since we want to scale it later up by 4  
 
     if (dt == 0):
         dt = 1/1000
