@@ -16,9 +16,7 @@ class Chest:
         self.mimic = self.mimicProbability < random.random()
         self.distanceToPlayer = 1000
         
-    def draw(self, screen, x_offset, y_offset,dt):
-        self.distanceToPlayer = math.sqrt(math.pow(self.position.x-self.player.position.x,2)+math.pow(self.position.y-self.player.position.y,2))
-        self.anim += dt
+    def draw(self, screen, x_offset, y_offset):
         if self.mimic and self.open:
             tile = self.tileset.tiles[math.floor(self.anim * 10) % 2 + 33]
         if not self.open:
@@ -30,3 +28,7 @@ class Chest:
     def interact(self):
         if self.distanceToPlayer < 40:
             self.open = not self.open
+    
+    def move(self, dt):
+        self.anim += dt
+        self.distanceToPlayer = math.sqrt(math.pow(self.position.x-self.player.position.x,2)+math.pow(self.position.y-self.player.position.y,2))

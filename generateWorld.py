@@ -9,6 +9,7 @@ class GenerateWorld:
 
         # higher = smoother terrain, lower = more detail
         self.scale = 100
+        self.cache = {}
 
     def get_noise_value(self, world_x, world_y):
         scaled_x = world_x / self.scale
@@ -39,26 +40,7 @@ class GenerateWorld:
                 tile_x = start_tile_x + x
                 tile_y = start_tile_y + y
 
-                # get value based on tile position
-                value = self.get_noise_value(tile_x, tile_y)
-                # black_white_value = int(value * 255)
-                # color = (black_white_value, black_white_value, black_white_value)
-
-                # WATER
-                if value < 0.2:
-                    color = ("#255786")     # deep water
-                elif value < 0.3:
-                    color = ("#068fbc")     # normal water
-                # GRASS
-                elif value < 0.4:
-                    color = ("#619861")    # normal grass
-                elif value < 0.5:
-                    color = ("#44714d")    # dark grass
-                # MOUNTAIN
-                elif value < 0.6:
-                    color = ("#9a8a74")  # rock grey
-                else:
-                    color = ("#6a635a")     # dark mountain
+                color = self.getColorAt(tile_x, tile_y)
 
                 # get tile position on screen
                 screen_x = (tile_x * tile_size) - camera_pos.x
@@ -72,3 +54,36 @@ class GenerateWorld:
                     tile_size
                 )
                 pygame.draw.rect(surface, color, rect)
+
+    
+    def getColorAt(self, tile_x, tile_y):
+
+        key = (tile_x, tile_y)
+        color = self.cache.get(key)
+        if color is not None:
+            return color         
+
+        # get value based on tile position
+        value = self.get_noise_value(tile_x, tile_y)
+        # black_white_value = int(value * 255)
+        # color = (black_white_value, black_white_value, black_white_value)
+
+        # WATER
+        if value < 0.2:
+            color = ("#255786")     # deep water
+        elif value < 0.3:
+           color = ("#068fbc")     # normal water
+        # GRASS
+        elif value < 0.4:
+            color = ("#619861")    # normal grass
+        elif value < 0.5:
+            color = ("#44714d")    # dark grass
+        # MOUNTAIN
+        elif value < 0.6:
+            color = ("#9a8a74")  # rock grey
+        else:
+            color = ("#6a635a")     # dark mountain
+
+        self.cache[key] = color
+
+        return color

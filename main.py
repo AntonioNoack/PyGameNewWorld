@@ -39,8 +39,16 @@ chest = Chest(chest_pos, player)
 camera_pos = pygame.Vector2(world_surface.get_width() / 2, world_surface.get_height() / 2)
 camera = Camera(camera_pos)
 
+entities = [
+    player, slime, chest
+]
+
 # UI
 font = pygame.freetype.Font("assets/fonts/OpenSans-Medium.ttf", 20)
+fps = 30
+
+def mix(a, b, f):
+    return a + (b-a) * f
 
 while True:
     for event in pygame.event.get():
@@ -60,12 +68,12 @@ while True:
             print("e pressed")
             chest.interact()
 
+    if (dt == 0):
+        dt = 1/1000
+
     # ------------------
     # LOGIC
     # ------------------
-
-    # Move Player
-    player.move(dt)
 
     # Update Camera
     camera.move(dt)
@@ -73,8 +81,8 @@ while True:
     x_offset=((world_surface.get_width() / 2)-camera_pos.x)
     y_offset=((world_surface.get_height() / 2)-camera_pos.y)
 
-    # Move Mobs
-    slime.move(dt)
+    for i in entities:
+        i.move(dt)
 
     # ------------------
     # WORLD AND PLAYER GRAPHICS
@@ -90,15 +98,11 @@ while True:
 
     generated_world.draw_terrain_map(screen, world_surface, world_tile_size, camera_pos)
 
-    # Display Player
-    player.draw(world_surface, x_offset, y_offset)
+    entities.sort(key=lambda i: i.position.y)
 
-    # Display Mobs
-    slime.draw(world_surface, x_offset, y_offset)
+    for i in entities:
+        i.draw(world_surface, x_offset, y_offset)
 
-    # Display Environment
-    chest.draw(world_surface, x_offset, y_offset, dt)
-    
     # Scale World Surface to Screen
     scaled_world_surface = pygame.transform.scale(world_surface, (screen.get_width(),screen.get_height()))
     screen.blit(scaled_world_surface, (0,0))
@@ -124,6 +128,11 @@ while True:
     if chest.distanceToPlayer < 40:
         font_surface, _ = font.render(f"Open/Close chest (press e)", "black")
         screen.blit(font_surface, (10, 100))
+
+    fps = mix(fps, 1 / dt, 0.03)
+    font_surface, _ = font.render(f"FPS: {fps:.0f}", "black")
+    screen.blit(font_surface, (10, 130))
+    
 
     # Update the display with everything drawn
     pygame.display.flip()
