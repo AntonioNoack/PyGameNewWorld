@@ -24,3 +24,18 @@ pip install -r requirements.txt
 ```bash
 python3 main.py
 ```
+
+## Ressources
+### Tilemaps
+character_walking.png,
+overworld.png
+from Zelda-like tilesets and sprites by ArMM1998
+https://opengameart.org/content/zelda-like-tilesets-and-sprites
+
+slimes_green.png
+from FREE Bouncing Slimes Animation by Shimmy
+https://shimyx.itch.io/6-direction-slimes-animation
+
+Mimic Sprite Sheet2.png
+from 2D Pixel Art Mimic Sprites by Elthen
+https://elthen.itch.io/2d-pixel-art-mimic-sprites
