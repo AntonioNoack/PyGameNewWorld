@@ -101,7 +101,7 @@ while True:
 
     #         world_surface.blit(world_tileset.tiles[0], (world_tile_size*x+x_offset,world_tile_size*y+y_offset))
 
-    generated_world.draw_terrain_map(screen, world_surface, world_tile_size, camera_pos)
+    generated_world.draw_terrain(screen, world_surface, world_tile_size, camera_pos)
 
     entities.sort(key=lambda i: i.position.y)
 

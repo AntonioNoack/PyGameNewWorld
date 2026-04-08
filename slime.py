@@ -6,7 +6,7 @@ class Slime:
     def __init__(self, slime_pos, player):
         self.speed = 120
         self.position = slime_pos
-        self.tileset = Tileset("assets/tilemaps/slimes_green.png", (276 // 6,198 // 6))
+        self.tileset = Tileset("assets/tilemaps/slimes_green.png", (276 // 6, 198 // 6))
         #tileset from https://shimyx.itch.io/6-direction-slimes-animation
         self.anim = 0
         self.orientation = "down"
